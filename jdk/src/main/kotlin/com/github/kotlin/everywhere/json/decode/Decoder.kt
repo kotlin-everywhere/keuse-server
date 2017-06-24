@@ -17,11 +17,19 @@ object Decoders {
     val boolean: Decoder<Boolean> = {
         if (it.isJsonPrimitive && it.asJsonPrimitive.isBoolean) {
             Ok(it.asBoolean)
-        }
-        else {
+        } else {
             Err("Expecting a Boolean but instead got: $it")
         }
     }
+
+    val int: Decoder<Int> = {
+        if (it.isJsonPrimitive && it.asJsonPrimitive.isNumber) {
+            Ok(it.asInt)
+        } else {
+            Err("Expecting a Int but instead got: $it")
+        }
+    }
+
 }
 
 fun <T> decodeString(decoder: Decoder<T>, json: String): Result<String, T> {

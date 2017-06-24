@@ -1,6 +1,7 @@
 package com.github.kotlin.everywhere
 
 import com.github.kotlin.everywhere.json.decode.Decoders.boolean
+import com.github.kotlin.everywhere.json.decode.Decoders.int
 import com.github.kotlin.everywhere.json.decode.Decoders.string
 import com.github.kotlin.everywhere.json.decode.Err
 import com.github.kotlin.everywhere.json.decode.Ok
@@ -25,5 +26,14 @@ class DecoderTest {
         assertEquals(Err.of("Expecting a Boolean but instead got: 3.14"), decodeString(boolean, "3.14"))
         assertEquals(Err.of("Expecting a Boolean but instead got: \"hello\""), decodeString(boolean, "\"hello\""))
         assertEquals(Err.of("Expecting a Boolean but instead got: {\"hello\":42}"), decodeString(boolean, "{ \"hello\": 42 }"))
+    }
+
+    @Test
+    fun testInt() {
+        assertEquals(Err.of("Expecting a Int but instead got: true"), decodeString(int, "true"))
+        assertEquals(Ok.of(42), decodeString(int, "42"))
+        assertEquals(Err.of("Expecting a Int but instead got: 3.14"), decodeString(int, "3.14"))
+        assertEquals(Err.of("Expecting a Int but instead got: \"hello\""), decodeString(int, "\"hello\""))
+        assertEquals(Err.of("Expecting a Int but instead got: {\"hello\":42}"), decodeString(int, "{ \"hello\": 42 }"))
     }
 }
