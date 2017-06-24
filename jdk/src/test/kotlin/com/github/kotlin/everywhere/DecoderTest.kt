@@ -1,6 +1,6 @@
 package com.github.kotlin.everywhere
 
-import com.github.kotlin.everywhere.json.decode.Decoder.Companion.string
+import com.github.kotlin.everywhere.json.decode.Decoders.string
 import com.github.kotlin.everywhere.json.decode.Err
 import com.github.kotlin.everywhere.json.decode.Ok
 import com.github.kotlin.everywhere.json.decode.decodeString
