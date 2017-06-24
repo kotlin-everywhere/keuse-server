@@ -37,6 +37,26 @@ object Decoders {
             Err("Expecting a Float but instead got: $it")
         }
     }
+
+    fun <T> nul(): Decoder<T?> {
+        return {
+            if (it.isJsonNull) {
+                Ok(null as T?)
+            } else {
+                Err("Expecting a Null but instead got: $it")
+            }
+        }
+    }
+
+    fun <T> nullable(decoder: Decoder<T>): Decoder<T?> {
+        return {
+            if (it.isJsonNull) {
+                Ok(null)
+            } else {
+                decoder(it).map { it }
+            }
+        }
+    }
 }
 
 private val String.isFloat: Boolean
