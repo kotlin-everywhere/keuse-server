@@ -1,6 +1,7 @@
 package com.github.kotlin.everywhere
 
 import com.github.kotlin.everywhere.json.decode.Decoders.boolean
+import com.github.kotlin.everywhere.json.decode.Decoders.field
 import com.github.kotlin.everywhere.json.decode.Decoders.float
 import com.github.kotlin.everywhere.json.decode.Decoders.int
 import com.github.kotlin.everywhere.json.decode.Decoders.nul
@@ -68,5 +69,15 @@ class DecoderTest {
     fun testNullable() {
         assertEquals(Ok.of(null), decodeString(nullable(int), "null"))
         assertEquals(Err.of("Expecting a Int but instead got: true"), decodeString(int, "true"))
+    }
+
+    @Test
+    fun testField() {
+        assertEquals(Ok.of(3), decodeString(field("x", int), "{ \"x\": 3 }"))
+        assertEquals(Ok.of(3), decodeString(field("x", int), "{ \"x\": 3, \"y\": 4 }"))
+        assertEquals(Err.of("Expecting a Int but instead got: true"), decodeString(field("x", int), "{ \"x\": true }"))
+        assertEquals(Err.of("Expecting an object with a field named `x` but instead got: {\"y\":4}"), decodeString(field("x", int), "{ \"y\": 4 }"))
+
+        assertEquals(Ok.of("tom"), decodeString(field("name", string), "{ \"name\": \"tom\" }"))
     }
 }

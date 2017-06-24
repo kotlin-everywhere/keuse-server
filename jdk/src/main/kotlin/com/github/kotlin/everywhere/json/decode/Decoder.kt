@@ -57,6 +57,21 @@ object Decoders {
             }
         }
     }
+
+    fun <T> field(name: String, decoder: Decoder<T>): Decoder<T> {
+        return {
+            if (it.isJsonObject) {
+                val obj = it.asJsonObject
+                if (obj.has(name)) {
+                    decoder(it.asJsonObject[name])
+                } else {
+                    Err("Expecting an object with a field named `$name` but instead got: {\"y\":4}")
+                }
+            } else {
+                Err("Expecting an object but instead got: $it")
+            }
+        }
+    }
 }
 
 private val String.isFloat: Boolean
