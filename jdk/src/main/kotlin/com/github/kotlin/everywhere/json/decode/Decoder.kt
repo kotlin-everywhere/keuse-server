@@ -13,6 +13,15 @@ object Decoders {
             Err("Expecting a String but instead got: $it")
         }
     }
+
+    val boolean: Decoder<Boolean> = {
+        if (it.isJsonPrimitive && it.asJsonPrimitive.isBoolean) {
+            Ok(it.asBoolean)
+        }
+        else {
+            Err("Expecting a Boolean but instead got: $it")
+        }
+    }
 }
 
 fun <T> decodeString(decoder: Decoder<T>, json: String): Result<String, T> {
