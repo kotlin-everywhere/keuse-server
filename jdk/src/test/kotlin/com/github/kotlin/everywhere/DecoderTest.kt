@@ -10,6 +10,7 @@ import com.github.kotlin.everywhere.json.decode.Decoders.string
 import com.github.kotlin.everywhere.json.decode.Err
 import com.github.kotlin.everywhere.json.decode.Ok
 import com.github.kotlin.everywhere.json.decode.decodeString
+import com.github.kotlin.everywhere.json.decode.map
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -79,5 +80,27 @@ class DecoderTest {
         assertEquals(Err.of("Expecting an object with a field named `x` but instead got: {\"y\":4}"), decodeString(field("x", int), "{ \"y\": 4 }"))
 
         assertEquals(Ok.of("tom"), decodeString(field("name", string), "{ \"name\": \"tom\" }"))
+    }
+
+    @Test
+    fun map1() {
+        assertEquals(Ok.of("life"), decodeString(map(int) { if (it == 42) "life" else "no life" }, "42"))
+        assertEquals(Ok.of("no life"), decodeString(map(int) { if (it == 42) "life" else "no life" }, "41"))
+    }
+
+    @Test
+    fun map2() {
+        data class Point(val x: Int, val y: Int)
+
+        val decoder = map(field("x", int), field("y", int), ::Point)
+        assertEquals(Ok.of(Point(x = 3, y = 4)), decodeString(decoder, """{ "x": 3, "y": 4 }"""))
+    }
+
+    @Test
+    fun map3() {
+        data class Point(val x: Int, val y: Int, val z: Int)
+
+        val decoder = map(field("x", int), field("y", int), field("z", int), ::Point)
+        assertEquals(Ok.of(Point(x = 3, y = 4, z = 5)), decodeString(decoder, """{ "x": 3, "y": 4, "z": 5 }"""))
     }
 }

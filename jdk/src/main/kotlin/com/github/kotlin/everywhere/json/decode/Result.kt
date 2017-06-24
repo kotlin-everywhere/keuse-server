@@ -7,6 +7,13 @@ sealed class Result<E, O> {
             is Err -> Err(this.error)
         }
     }
+
+    fun <O2> andThen(mapper: (O) -> Result<E, O2>): Result<E, O2> {
+        return when (this) {
+            is Ok -> mapper(this.data)
+            is Err -> Err(this.error)
+        }
+    }
 }
 
 
