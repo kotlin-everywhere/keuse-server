@@ -5,21 +5,11 @@ import com.google.gson.*
 typealias Value = JsonElement
 
 object Encoders {
-    fun string(str: String): Value {
-        return JsonPrimitive(str)
-    }
+    val string: (String) -> Value = ::JsonPrimitive
+    val int: (Int) -> Value = ::JsonPrimitive
+    val float: (Float) -> Value = ::JsonPrimitive
+    val bool: (Boolean) -> Value = ::JsonPrimitive
 
-    fun int(i: Int): Value {
-        return JsonPrimitive(i)
-    }
-
-    fun float(f: Float): Value {
-        return JsonPrimitive(f)
-    }
-
-    fun bool(b: Boolean): Value {
-        return JsonPrimitive(b)
-    }
 
     fun object_(vararg fields: Pair<String, Value>): Value {
         return fields.fold(JsonObject()) { obj, (name, value) -> obj.add(name, value); obj }

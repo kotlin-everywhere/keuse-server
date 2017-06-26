@@ -41,6 +41,6 @@ class EncoderTest {
 
     @Test
     fun testArray() {
-        assertEquals("[1,2,3]", encode(array(listOf(1, 2, 3).map(::int))))
+        assertEquals("[1,2,3]", encode(array(listOf(1, 2, 3).map(int))))
     }
 }
