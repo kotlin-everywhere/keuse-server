@@ -4,6 +4,8 @@ import com.google.gson.*
 
 typealias Value = JsonElement
 
+typealias Encoder<T> = (T) -> Value
+
 object Encoders {
     val string: (String) -> Value = ::JsonPrimitive
     val int: (Int) -> Value = ::JsonPrimitive
