@@ -9,12 +9,15 @@ class TestBox {
     fun testHandler() {
         val crate = object : Crate() {
             val echo by f<String, String>()
+            val doubleIt by f<Int, Int>()
 
             init {
                 echo { it }
+                doubleIt { it * 2 }
             }
         }
 
         assertEquals("hello", crate.echo.handler("hello"))
+        assertEquals(4, crate.doubleIt.handler(2))
     }
 }
