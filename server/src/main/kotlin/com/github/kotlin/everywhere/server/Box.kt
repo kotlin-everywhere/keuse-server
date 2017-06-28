@@ -22,7 +22,7 @@ class Box<P, R>(private val decoder: Decoder<P>, private val encoder: Encoder<R>
         private var box = null as Box<P, R>?
 
         override fun getValue(thisRef: Crate, property: KProperty<*>): Box<P, R> {
-            return box ?: Box<P, R>(decoder, encoder).apply { box = this; attach(property.name, this) }
+            return box ?: Box(decoder, encoder).apply { box = this; attach(property.name, this) }
         }
     }
 

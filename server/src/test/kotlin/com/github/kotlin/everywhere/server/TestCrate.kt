@@ -13,6 +13,7 @@ class TestCrate {
             val echo by b(Decoders.int, Encoders.int)
             val sub by c {
                 object : Crate() {
+                    @Suppress("unused")
                     val doubleIt by b(Decoders.int, Encoders.int)
                 }
             }
