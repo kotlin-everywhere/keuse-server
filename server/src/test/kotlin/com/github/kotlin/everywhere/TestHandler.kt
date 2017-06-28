@@ -1,5 +1,7 @@
 package com.github.kotlin.everywhere
 
+import com.github.kotlin.everywhere.json.decode.Decoders
+import com.github.kotlin.everywhere.json.encode.Encoders
 import com.github.kotlin.everywhere.server.Crate
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -8,8 +10,8 @@ class TestBox {
     @Test
     fun testHandler() {
         val crate = object : Crate() {
-            val echo by f<String, String>()
-            val doubleIt by f<Int, Int>()
+            val echo by b(Decoders.string, Encoders.string)
+            val doubleIt by b(Decoders.int, Encoders.int)
 
             init {
                 echo { it }
