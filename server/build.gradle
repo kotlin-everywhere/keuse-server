@@ -33,13 +33,15 @@ artifacts {
 
 repositories {
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'org.eclipse.jetty:jetty-server:9.4.6.v20170531'
     compile 'org.eclipse.jetty:jetty-servlet:9.4.6.v20170531'
-    compile project(":json-jdk")
+    compile 'com.github.kotlin-everywhere:json:2308eefc56'
+
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.github.kittinunf.fuel:fuel:1.8.0'

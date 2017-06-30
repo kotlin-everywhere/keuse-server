@@ -1,1 +1,1 @@
-include 'server', 'json-jdk'
+include 'server'
