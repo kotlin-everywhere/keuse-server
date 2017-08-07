@@ -24,16 +24,16 @@ private val uuidDecoder: Decoder<UUID> = {
 }
 
 class Example : Crate() {
-    val echo by b(Decoders.int, Encoders.int)
-    val greet by b(Decoders.string, Encoders.string)
+    val echo by e(Decoders.int, Encoders.int)
+    val greet by e(Decoders.string, Encoders.string)
     val todo by c(::TodoCrate)
 }
 
 class TodoCrate : Crate() {
-    val add by b(Todo.decoder, Add.encoder)
-    val list by b(Decoders.nullable(Decoders.string), { todoList: List<Todo> -> Encoders.array(todoList.map { Todo.encoder(it) }) })
-    val update by b(Todo.decoder, Encoders.bool)
-    val delete by b(uuidDecoder, Encoders.bool)
+    val add by e(Todo.decoder, Add.encoder)
+    val list by e(Decoders.nullable(Decoders.string), { todoList: List<Todo> -> Encoders.array(todoList.map { Todo.encoder(it) }) })
+    val update by e(Todo.decoder, Encoders.bool)
+    val delete by e(uuidDecoder, Encoders.bool)
 
     sealed class Add {
         object Success : Add()

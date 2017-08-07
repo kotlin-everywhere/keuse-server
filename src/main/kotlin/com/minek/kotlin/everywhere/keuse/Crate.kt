@@ -6,12 +6,12 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 abstract class Crate {
-    private var boxes = mapOf<String, Box<*, *>>()
+    private var endPoints = mapOf<String, EndPoint<*, *>>()
     private var crates = mapOf<String, Crate>()
 
-    fun <P, R> b(decoder: Decoder<P>, encoder: Encoder<R>): Box.BoxDelegate<P, R> {
-        return Box.BoxDelegate(decoder, encoder) { name, box ->
-            boxes += name to box
+    fun <P, R> e(decoder: Decoder<P>, encoder: Encoder<R>): EndPoint.BoxDelegate<P, R> {
+        return EndPoint.BoxDelegate(decoder, encoder) { name, box ->
+            endPoints += name to box
         }
     }
 
@@ -19,14 +19,14 @@ abstract class Crate {
         return Delegate(constructor) { name, crate -> crates += name to crate }
     }
 
-    internal fun findBox(path: String): Box<*, *>? {
+    internal fun findBox(path: String): EndPoint<*, *>? {
         return findBox(path.split('/'))
     }
 
-    private fun findBox(paths: List<String>): Box<*, *>? {
+    private fun findBox(paths: List<String>): EndPoint<*, *>? {
         if (paths.size == 1) {
             val path = paths.first()
-            return boxes[path]
+            return endPoints[path]
         }
         return crates[paths.first()]?.findBox(paths.subList(1, paths.size))
     }

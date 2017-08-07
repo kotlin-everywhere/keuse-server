@@ -11,11 +11,11 @@ class testCreate {
     @Test
     fun testFindBox() {
         val crate = object : Crate() {
-            val echo by b(Decoders.int, Encoders.int)
+            val echo by e(Decoders.int, Encoders.int)
             val sub by c {
                 object : Crate() {
                     @Suppress("unused")
-                    val doubleIt by b(Decoders.int, Encoders.int)
+                    val doubleIt by e(Decoders.int, Encoders.int)
                 }
             }
 

@@ -9,7 +9,7 @@ import org.junit.Assert
 import org.junit.Test
 
 class Root : Crate() {
-    val echo by b(Decoders.string, Encoders.string)
+    val echo by e(Decoders.string, Encoders.string)
 }
 
 fun Root.impl() {

@@ -6,12 +6,12 @@ import com.minek.kotline.everywehre.keuson.encode.Encoders
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class TestBox {
+class TestEndPoint {
     @Test
     fun testHandler() {
         val crate = object : Crate() {
-            val echo by b(Decoders.string, Encoders.string)
-            val doubleIt by b(Decoders.int, Encoders.int)
+            val echo by e(Decoders.string, Encoders.string)
+            val doubleIt by e(Decoders.int, Encoders.int)
 
             init {
                 echo { it }
