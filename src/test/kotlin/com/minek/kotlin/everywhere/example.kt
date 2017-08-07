@@ -5,8 +5,16 @@ import com.minek.kotlin.everywhere.kelibs.result.Ok
 import com.minek.kotlin.everywhere.kelibs.result.andThen
 import com.minek.kotlin.everywhere.keuse.Crate
 import com.minek.kotlin.everywhere.keuse.runServer
+import com.minek.kotline.everywehre.keuson.convert.Converters.boolean
+import com.minek.kotline.everywehre.keuson.convert.Converters.int
+import com.minek.kotline.everywehre.keuson.convert.Converters.list
+import com.minek.kotline.everywehre.keuson.convert.Converters.nullable
+import com.minek.kotline.everywehre.keuson.convert.Converters.string
 import com.minek.kotline.everywehre.keuson.decode.Decoder
 import com.minek.kotline.everywehre.keuson.decode.Decoders
+import com.minek.kotline.everywehre.keuson.decode.Decoders.fail
+import com.minek.kotline.everywehre.keuson.decode.Decoders.success
+import com.minek.kotline.everywehre.keuson.decode.andThen
 import com.minek.kotline.everywehre.keuson.decode.map
 import com.minek.kotline.everywehre.keuson.encode.Encoder
 import com.minek.kotline.everywehre.keuson.encode.Encoders
@@ -22,18 +30,19 @@ private val uuidDecoder: Decoder<UUID> = {
         }
     }
 }
+private val uuidConverter = uuidEncoder to uuidDecoder
 
 class Example : Crate() {
-    val echo by e(Decoders.int, Encoders.int)
-    val greet by e(Decoders.string, Encoders.string)
+    val echo by e(int, int)
+    val greet by e(string, string)
     val todo by c(::TodoCrate)
 }
 
 class TodoCrate : Crate() {
-    val add by e(Todo.decoder, Add.encoder)
-    val list by e(Decoders.nullable(Decoders.string), { todoList: List<Todo> -> Encoders.array(todoList.map { Todo.encoder(it) }) })
-    val update by e(Todo.decoder, Encoders.bool)
-    val delete by e(uuidDecoder, Encoders.bool)
+    val add by e(Todo.converter, Add.converter)
+    val list by e(nullable(string), list(Todo.converter))
+    val update by e(Todo.converter, boolean)
+    val delete by e(uuidConverter, boolean)
 
     sealed class Add {
         object Success : Add()
@@ -41,8 +50,19 @@ class TodoCrate : Crate() {
 
         companion object {
             val encoder = { it: Add ->
-                Encoders.string(it.javaClass.simpleName)
+                when (it) {
+                    Success -> Encoders.string("Success")
+                    DuplicatedId -> Encoders.string("DuplicatedId")
+                }
             }
+            val decoder = andThen(Decoders.string) {
+                when (it) {
+                    "Success" -> success(Success)
+                    "DuplicatedId" -> success(DuplicatedId)
+                    else -> fail("$it is invalid Add Type")
+                }
+            }
+            val converter = encoder to decoder
         }
     }
 
@@ -52,6 +72,7 @@ class TodoCrate : Crate() {
             val encoder = { (id, title): Todo ->
                 Encoders.object_("id" to uuidEncoder(id), "title" to Encoders.string(title))
             }
+            val converter = encoder to decoder
         }
     }
 }

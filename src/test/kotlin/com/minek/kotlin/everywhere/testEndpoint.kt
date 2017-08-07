@@ -1,8 +1,8 @@
 package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuse.Crate
-import com.minek.kotline.everywehre.keuson.decode.Decoders
-import com.minek.kotline.everywehre.keuson.encode.Encoders
+import com.minek.kotline.everywehre.keuson.convert.Converters.int
+import com.minek.kotline.everywehre.keuson.convert.Converters.string
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,8 +10,8 @@ class TestEndPoint {
     @Test
     fun testHandler() {
         val crate = object : Crate() {
-            val echo by e(Decoders.string, Encoders.string)
-            val doubleIt by e(Decoders.int, Encoders.int)
+            val echo by e(string, string)
+            val doubleIt by e(int, int)
 
             init {
                 echo { it }

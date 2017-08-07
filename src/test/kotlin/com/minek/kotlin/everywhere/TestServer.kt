@@ -3,13 +3,12 @@ package com.minek.kotlin.everywhere
 import com.github.kittinunf.fuel.httpPost
 import com.minek.kotlin.everywhere.keuse.Crate
 import com.minek.kotlin.everywhere.keuse.runServer
-import com.minek.kotline.everywehre.keuson.decode.Decoders
-import com.minek.kotline.everywehre.keuson.encode.Encoders
+import com.minek.kotline.everywehre.keuson.convert.Converters.string
 import org.junit.Assert
 import org.junit.Test
 
 class Root : Crate() {
-    val echo by e(Decoders.string, Encoders.string)
+    val echo by e(string, string)
 }
 
 fun Root.impl() {

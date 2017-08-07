@@ -1,8 +1,7 @@
 package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuse.Crate
-import com.minek.kotline.everywehre.keuson.decode.Decoders
-import com.minek.kotline.everywehre.keuson.encode.Encoders
+import com.minek.kotline.everywehre.keuson.convert.Converters.int
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -11,11 +10,11 @@ class testCreate {
     @Test
     fun testFindBox() {
         val crate = object : Crate() {
-            val echo by e(Decoders.int, Encoders.int)
+            val echo by e(int, int)
             val sub by c {
                 object : Crate() {
                     @Suppress("unused")
-                    val doubleIt by e(Decoders.int, Encoders.int)
+                    val doubleIt by e(int, int)
                 }
             }
 
