@@ -1,10 +1,10 @@
-package com.github.kotlin.everywhere
+package com.minek.kotlin.everywhere
 
 import com.github.kittinunf.fuel.httpPost
 import com.github.kotlin.everywhere.json.decode.Decoders
 import com.github.kotlin.everywhere.json.encode.Encoders
-import com.github.kotlin.everywhere.server.Crate
-import com.github.kotlin.everywhere.server.runServer
+import com.minek.kotlin.everywhere.keuse.Crate
+import com.minek.kotlin.everywhere.keuse.runServer
 import org.junit.Assert
 import org.junit.Test
 

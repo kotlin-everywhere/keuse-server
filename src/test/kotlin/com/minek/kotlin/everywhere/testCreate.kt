@@ -1,12 +1,13 @@
-package com.github.kotlin.everywhere.server
+package com.minek.kotlin.everywhere
 
 import com.github.kotlin.everywhere.json.decode.Decoders
 import com.github.kotlin.everywhere.json.encode.Encoders
+import com.minek.kotlin.everywhere.keuse.Crate
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-class TestCrate {
+class testCreate {
     @Test
     fun testFindBox() {
         val crate = object : Crate() {

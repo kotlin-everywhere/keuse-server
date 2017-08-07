@@ -1,4 +1,4 @@
-package com.github.kotlin.everywhere.server
+package com.minek.kotlin.everywhere.keuse
 
 import com.github.kotlin.everywhere.json.decode.Decoder
 import com.github.kotlin.everywhere.json.decode.Result

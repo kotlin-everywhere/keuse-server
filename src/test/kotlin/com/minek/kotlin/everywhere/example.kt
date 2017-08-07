@@ -1,10 +1,10 @@
-package com.github.kotlin
+package com.minek.kotlin.everywhere
 
 import com.github.kotlin.everywhere.json.decode.*
 import com.github.kotlin.everywhere.json.encode.Encoder
 import com.github.kotlin.everywhere.json.encode.Encoders
-import com.github.kotlin.everywhere.server.Crate
-import com.github.kotlin.everywhere.server.runServer
+import com.minek.kotlin.everywhere.keuse.Crate
+import com.minek.kotlin.everywhere.keuse.runServer
 import java.util.*
 
 private val uuidEncoder: Encoder<UUID> = { Encoders.string(it.toString()) }

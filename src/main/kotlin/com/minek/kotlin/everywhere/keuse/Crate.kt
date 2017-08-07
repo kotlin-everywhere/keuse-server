@@ -1,8 +1,8 @@
-package com.github.kotlin.everywhere.server
+package com.minek.kotlin.everywhere.keuse
 
 import com.github.kotlin.everywhere.json.decode.Decoder
 import com.github.kotlin.everywhere.json.encode.Encoder
-import com.github.kotlin.everywhere.server.Box.BoxDelegate
+import com.minek.kotlin.everywhere.keuse.Box
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -10,8 +10,8 @@ abstract class Crate {
     private var boxes = mapOf<String, Box<*, *>>()
     private var crates = mapOf<String, Crate>()
 
-    fun <P, R> b(decoder: Decoder<P>, encoder: Encoder<R>): BoxDelegate<P, R> {
-        return BoxDelegate(decoder, encoder) { name, box ->
+    fun <P, R> b(decoder: Decoder<P>, encoder: Encoder<R>): Box.BoxDelegate<P, R> {
+        return Box.BoxDelegate(decoder, encoder) { name, box ->
             boxes += name to box
         }
     }
