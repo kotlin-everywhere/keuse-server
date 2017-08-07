@@ -1,10 +1,9 @@
 package com.minek.kotlin.everywhere.keuse
 
-import com.github.kotlin.everywhere.json.decode.Err
-import com.github.kotlin.everywhere.json.decode.Ok
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import com.minek.kotlin.everywhere.keuse.Crate
+import com.minek.kotlin.everywhere.kelibs.result.Err
+import com.minek.kotlin.everywhere.kelibs.result.Ok
 import org.eclipse.jetty.http.HttpStatus
 import org.eclipse.jetty.server.NetworkConnector
 import org.eclipse.jetty.server.Server
@@ -29,7 +28,7 @@ class CrateServlet(private val crate: Crate) : HttpServlet() {
         when (output) {
             is Ok -> {
                 resp.contentType = "application/json"
-                gson.toJson(output.data, resp.writer)
+                gson.toJson(output.value, resp.writer)
             }
             is Err -> resp.sendError(HttpStatus.UNPROCESSABLE_ENTITY_422, output.error)
         }

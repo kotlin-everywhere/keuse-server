@@ -1,10 +1,11 @@
 package com.minek.kotlin.everywhere.keuse
 
-import com.github.kotlin.everywhere.json.decode.Decoder
-import com.github.kotlin.everywhere.json.decode.Result
-import com.github.kotlin.everywhere.json.encode.Encoder
-import com.github.kotlin.everywhere.json.encode.Value
 import com.google.gson.JsonElement
+import com.minek.kotlin.everywhere.kelibs.result.Result
+import com.minek.kotlin.everywhere.kelibs.result.map
+import com.minek.kotline.everywehre.keuson.decode.Decoder
+import com.minek.kotline.everywehre.keuson.encode.Encoder
+import com.minek.kotline.everywehre.keuson.encode.Value
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

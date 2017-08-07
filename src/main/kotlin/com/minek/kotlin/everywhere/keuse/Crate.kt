@@ -1,8 +1,7 @@
 package com.minek.kotlin.everywhere.keuse
 
-import com.github.kotlin.everywhere.json.decode.Decoder
-import com.github.kotlin.everywhere.json.encode.Encoder
-import com.minek.kotlin.everywhere.keuse.Box
+import com.minek.kotline.everywehre.keuson.decode.Decoder
+import com.minek.kotline.everywehre.keuson.encode.Encoder
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
