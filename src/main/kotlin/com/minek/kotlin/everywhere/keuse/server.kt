@@ -5,10 +5,16 @@ import com.google.gson.JsonParser
 import com.minek.kotlin.everywhere.kelibs.result.Err
 import com.minek.kotlin.everywhere.kelibs.result.Ok
 import org.eclipse.jetty.http.HttpStatus
+import org.eclipse.jetty.server.Dispatcher
 import org.eclipse.jetty.server.NetworkConnector
 import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.servlet.FilterHolder
+import org.eclipse.jetty.servlet.FilterMapping
 import org.eclipse.jetty.servlet.ServletHandler
 import org.eclipse.jetty.servlet.ServletHolder
+import java.util.*
+import javax.servlet.DispatcherType
+import javax.servlet.Filter
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -35,11 +41,12 @@ class CrateServlet(private val crate: Crate) : HttpServlet() {
     }
 }
 
-fun Crate.runServer(port: Int = 0, block: (port: Int, join: () -> Unit) -> Unit = { _, join -> join() }) {
+fun Crate.runServer(port: Int = 0, filters: List<Filter> = listOf(), block: (port: Int, join: () -> Unit) -> Unit = { _, join -> join() }) {
     val server = Server(port)
     val handler = ServletHandler()
     server.handler = handler
     handler.addServletWithMapping(ServletHolder(CrateServlet(this)), "/*")
+    filters.forEach { handler.addFilterWithMapping(FilterHolder(it), "/*", EnumSet.of(DispatcherType.REQUEST)) }
     server.start()
 
     val localPort = server.connectors.map { it as? NetworkConnector }.filterNotNull().first().localPort
