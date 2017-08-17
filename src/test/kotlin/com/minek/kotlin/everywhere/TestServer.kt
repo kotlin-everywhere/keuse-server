@@ -7,6 +7,7 @@ import com.minek.kotlin.everywhere.keuse.runServer
 import org.junit.Assert
 import org.junit.Test
 import javax.servlet.*
+import javax.servlet.http.HttpServletRequest
 
 class Root : Crate() {
     val echo by e(string, string)
@@ -41,6 +42,24 @@ class TestServer {
             val response =
                     "http://localhost:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
             Assert.assertEquals("filtered", String(response.second.data))
+        }
+    }
+
+    @Test
+    fun testContextPath() {
+        val filter = object : Filter {
+            override fun destroy() {}
+
+            override fun doFilter(request: ServletRequest?, response: ServletResponse?, chain: FilterChain?) {
+                response?.writer?.write("${(request as? HttpServletRequest)?.contextPath}")
+            }
+
+            override fun init(filterConfig: FilterConfig?) {}
+        }
+        Root().apply(Root::impl).runServer(filters = listOf(filter)) { port, _ ->
+            val response =
+                    "http://localhost:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
+            Assert.assertEquals("", String(response.second.data))
         }
     }
 }
