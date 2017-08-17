@@ -3,12 +3,12 @@ package com.minek.kotlin.everywhere.keuse
 import com.google.gson.JsonElement
 import com.minek.kotlin.everywhere.kelibs.result.Result
 import com.minek.kotlin.everywhere.kelibs.result.map
-import com.minek.kotline.everywehre.keuson.convert.Converter
-import com.minek.kotline.everywehre.keuson.convert.decoder
-import com.minek.kotline.everywehre.keuson.convert.encoder
-import com.minek.kotline.everywehre.keuson.decode.Decoder
-import com.minek.kotline.everywehre.keuson.encode.Encoder
-import com.minek.kotline.everywehre.keuson.encode.Value
+import com.minek.kotlin.everywehre.keuson.convert.Converter
+import com.minek.kotlin.everywehre.keuson.convert.decoder
+import com.minek.kotlin.everywehre.keuson.convert.encoder
+import com.minek.kotlin.everywehre.keuson.decode.Decoder
+import com.minek.kotlin.everywehre.keuson.encode.Encoder
+import com.minek.kotlin.everywehre.keuson.encode.Value
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 

@@ -1,8 +1,8 @@
 package com.minek.kotlin.everywhere
 
 import com.minek.kotlin.everywhere.keuse.Crate
-import com.minek.kotline.everywehre.keuson.convert.Converters.int
-import com.minek.kotline.everywehre.keuson.convert.Converters.string
+import com.minek.kotlin.everywehre.keuson.convert.Converters.int
+import com.minek.kotlin.everywehre.keuson.convert.Converters.string
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

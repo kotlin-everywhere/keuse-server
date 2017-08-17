@@ -40,7 +40,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile 'org.eclipse.jetty:jetty-server:9.4.6.v20170531'
     compile 'org.eclipse.jetty:jetty-servlet:9.4.6.v20170531'
-    compile 'com.github.kotlin-everywhere.keuson:keuson-java:c3d25a4b5e26f5e58bda1fa1f62ab21001720065'
+    compile 'com.github.kotlin-everywhere.keuson:keuson-java:fcc11024f0f2217a007611a873e5b47e6f686742'
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.github.kittinunf.fuel:fuel:1.8.0'
