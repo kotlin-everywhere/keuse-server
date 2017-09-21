@@ -16,8 +16,8 @@ abstract class Crate {
     private var endPoints = mapOf<String, EndPoint<*, *>>()
     private var crates = mapOf<String, Crate>()
 
-    fun <P, R> e(parameterConvert: Converter<P>, resultConverter: Converter<R>): EndPoint.BoxDelegate<P, R> {
-        return EndPoint.BoxDelegate(parameterConvert, resultConverter) { name, box ->
+    fun <P, R> e(parameterConvert: Converter<P>, resultConverter: Converter<R>): EndPoint.Delegate<P, R> {
+        return EndPoint.Delegate(parameterConvert, resultConverter) { name, box ->
             endPoints += name to box
         }
     }
@@ -59,7 +59,7 @@ class EndPoint<P, R>(private val decoder: Decoder<P>, private val encoder: Encod
         this.handler = handler
     }
 
-    class BoxDelegate<P, R>(private val parameterConverter: Converter<P>, private val resultConverter: Converter<R>, private val attach: (name: String, endPoint: EndPoint<P, R>) -> Unit) : ReadOnlyProperty<Crate, EndPoint<P, R>> {
+    class Delegate<P, R>(private val parameterConverter: Converter<P>, private val resultConverter: Converter<R>, private val attach: (name: String, endPoint: EndPoint<P, R>) -> Unit) : ReadOnlyProperty<Crate, EndPoint<P, R>> {
         private var box = null as EndPoint<P, R>?
 
         override fun getValue(thisRef: Crate, property: KProperty<*>): EndPoint<P, R> {
