@@ -1,7 +1,11 @@
 package com.minek.kotlin.everywhere
 
 import com.github.kittinunf.fuel.httpPost
+import com.minek.kotlin.everywehre.keuson.convert.Converters.nullable
+import com.minek.kotlin.everywehre.keuson.convert.Converters.result
 import com.minek.kotlin.everywehre.keuson.convert.Converters.string
+import com.minek.kotlin.everywhere.kelibs.result.Err
+import com.minek.kotlin.everywhere.kelibs.result.Ok
 import com.minek.kotlin.everywhere.keuse.Crate
 import com.minek.kotlin.everywhere.keuse.runServer
 import org.junit.Assert
@@ -11,19 +15,33 @@ import javax.servlet.http.HttpServletRequest
 
 class Root : Crate() {
     val echo by e(string, string)
+    val nullEcho by e(nullable(string), result(string, nullable(string)))
 }
 
 fun Root.impl() {
     echo { it }
+
+    nullEcho {
+        if (it == null) Ok(null)
+        else Err("not null")
+    }
 }
 
 class TestServer {
     @Test
     fun testIntegration() {
         Root().apply(Root::impl).runServer { port, _ ->
-            val response =
-                    "http://localhost:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
-            Assert.assertEquals("\"hello\"", String(response.second.data))
+
+            val echoResponse = "http://localhost:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
+            Assert.assertEquals("\"hello\"", String(echoResponse.second.data))
+
+            // 내부적으로 가지고 있는 Gson 사용핧경우 Converter 와 설정이 달라서 예상치 못한 결과가 나온다.
+            // 대표적으로 {value: null} 일경우 Gson 기본값은 {} 으로 출력 된다.
+            val nullEcho = "http://localhost:$port/nullEcho".httpPost()
+            val notNullEchoResponse = nullEcho.body("\"hello\"".toByteArray()).responseString()
+            Assert.assertEquals("""{"type":"Err","error":"not null"}""", String(notNullEchoResponse.second.data))
+            val nullEchoResponse = nullEcho.body("null".toByteArray()).responseString()
+            Assert.assertEquals("""{"type":"Ok","value":null}""", String(nullEchoResponse.second.data))
         }
     }
 

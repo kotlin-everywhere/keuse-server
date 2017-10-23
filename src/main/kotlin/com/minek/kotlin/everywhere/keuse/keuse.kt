@@ -1,14 +1,14 @@
 package com.minek.kotlin.everywhere.keuse
 
-import com.google.gson.JsonElement
-import com.minek.kotlin.everywhere.kelibs.result.Result
-import com.minek.kotlin.everywhere.kelibs.result.map
 import com.minek.kotlin.everywehre.keuson.convert.Converter
 import com.minek.kotlin.everywehre.keuson.convert.decoder
 import com.minek.kotlin.everywehre.keuson.convert.encoder
 import com.minek.kotlin.everywehre.keuson.decode.Decoder
+import com.minek.kotlin.everywehre.keuson.decode.decodeString
 import com.minek.kotlin.everywehre.keuson.encode.Encoder
 import com.minek.kotlin.everywehre.keuson.encode.Value
+import com.minek.kotlin.everywhere.kelibs.result.Result
+import com.minek.kotlin.everywhere.kelibs.result.map
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -67,7 +67,7 @@ class EndPoint<P, R>(private val decoder: Decoder<P>, private val encoder: Encod
         }
     }
 
-    internal fun handle(inputElement: JsonElement): Result<String, Value> {
-        return decoder(inputElement).map(handler).map(encoder)
+    internal fun handle(string: String): Result<String, Value> {
+        return decodeString(decoder, string).map(handler).map(encoder)
     }
 }

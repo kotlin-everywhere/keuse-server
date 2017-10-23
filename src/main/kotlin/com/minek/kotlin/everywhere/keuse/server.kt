@@ -1,7 +1,6 @@
 package com.minek.kotlin.everywhere.keuse
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
+import com.minek.kotlin.everywehre.keuson.encode.encode
 import com.minek.kotlin.everywhere.kelibs.result.Err
 import com.minek.kotlin.everywhere.kelibs.result.Ok
 import org.eclipse.jetty.http.HttpStatus
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class CrateServlet(private val crate: Crate) : HttpServlet() {
-    private val gson = GsonBuilder().create()
-
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
         val box = crate.findBox(req.requestURI.substring(1))
         if (box == null) {
@@ -28,11 +25,12 @@ class CrateServlet(private val crate: Crate) : HttpServlet() {
         }
 
 
-        val output = box.handle(JsonParser().parse(req.inputStream.reader()))
+        val input = req.inputStream.reader().readText()
+        val output = box.handle(input)
         when (output) {
             is Ok -> {
                 resp.contentType = "application/json"
-                gson.toJson(output.value, resp.writer)
+                resp.writer.write(encode(output.value))
             }
             is Err -> resp.sendError(HttpStatus.UNPROCESSABLE_ENTITY_422, output.error)
         }
