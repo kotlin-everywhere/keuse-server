@@ -50,13 +50,21 @@ abstract class Crate {
 
 
 typealias Handler<P, R> = (P) -> R
+typealias HttpHandler<P, R> = (HttpEnvironment, P) -> R
 
 class EndPoint<P, R>(private val decoder: Decoder<P>, private val encoder: Encoder<R>) {
     var handler: Handler<P, R> = { throw NotImplementedError() }
         private set
 
+    var httpHandler: HttpHandler<P, R> = { _, parameter -> handler(parameter) }
+        private set
+
     operator fun invoke(handler: Handler<P, R>) {
         this.handler = handler
+    }
+
+    fun withHttpEnv(httpHandler: HttpHandler<P, R>) {
+        this.httpHandler = httpHandler
     }
 
     class Delegate<P, R>(private val parameterConverter: Converter<P>, private val resultConverter: Converter<R>, private val attach: (name: String, endPoint: EndPoint<P, R>) -> Unit) : ReadOnlyProperty<Crate, EndPoint<P, R>> {
@@ -67,7 +75,9 @@ class EndPoint<P, R>(private val decoder: Decoder<P>, private val encoder: Encod
         }
     }
 
-    internal fun handle(string: String): Result<String, Value> {
-        return decodeString(decoder, string).map(handler).map(encoder)
+    internal fun handle(httpEnvironment: HttpEnvironment, string: String): Result<String, Value> {
+        return decodeString(decoder, string).map { httpHandler(httpEnvironment, it) }.map(encoder)
     }
 }
+
+data class HttpEnvironment(val host: String = "")

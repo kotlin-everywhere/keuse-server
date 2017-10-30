@@ -24,9 +24,9 @@ class CrateServlet(private val crate: Crate) : HttpServlet() {
             return
         }
 
-
         val input = req.inputStream.reader().readText()
-        val output = box.handle(input)
+
+        val output = box.handle(HttpEnvironment(req.getHeader("host") ?: ""), input)
         when (output) {
             is Ok -> {
                 resp.contentType = "application/json"

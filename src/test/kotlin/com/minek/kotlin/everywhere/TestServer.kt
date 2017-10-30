@@ -43,6 +43,19 @@ class TestServer {
             val nullEchoResponse = nullEcho.body("null".toByteArray()).responseString()
             Assert.assertEquals("""{"type":"Ok","value":null}""", String(nullEchoResponse.second.data))
         }
+
+        val httpEnvCrate = object : Crate() {
+            val echo by e(string, string)
+
+            init {
+                echo.withHttpEnv { environment, s -> "${environment.host} - $s" }
+            }
+        }
+
+        httpEnvCrate.runServer { port, _ ->
+            val echoResponse = "http://localtest.me:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
+            Assert.assertEquals("\"localtest.me:$port - hello\"", String(echoResponse.second.data))
+        }
     }
 
     @Test
