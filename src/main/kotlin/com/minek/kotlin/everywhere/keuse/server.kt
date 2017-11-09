@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-class CrateServlet(private val crate: Crate) : HttpServlet() {
+open class CrateServlet(private val crate: Crate) : HttpServlet() {
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
         val subUri = req.requestURI.substring(req.contextPath.length)
         val box = crate.findBox(if (subUri.startsWith("/")) subUri.substring(1) else subUri)
