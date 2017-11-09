@@ -18,7 +18,8 @@ import javax.servlet.http.HttpServletResponse
 
 class CrateServlet(private val crate: Crate) : HttpServlet() {
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-        val box = crate.findBox(req.requestURI.substring(1))
+        val subUri = req.requestURI.substring(req.contextPath.length)
+        val box = crate.findBox(if (subUri.startsWith("/")) subUri.substring(1) else subUri)
         if (box == null) {
             resp.sendError(HttpStatus.NOT_FOUND_404)
             return
@@ -37,11 +38,11 @@ class CrateServlet(private val crate: Crate) : HttpServlet() {
     }
 }
 
-fun Crate.runServer(port: Int = 0, filters: List<Filter> = listOf(), block: (port: Int, join: () -> Unit) -> Unit = { _, join -> join() }) {
+fun Crate.runServer(port: Int = 0, contextPath: String = "/", filters: List<Filter> = listOf(), block: (port: Int, join: () -> Unit) -> Unit = { _, join -> join() }) {
     val server = Server(port)
     val handler = ServletContextHandler()
     server.handler = handler
-    handler.contextPath = "/"
+    handler.contextPath = contextPath
     handler.addServlet(ServletHolder(CrateServlet(this)), "/*")
     filters.forEach { handler.addFilter(FilterHolder(it), "/*", EnumSet.of(DispatcherType.REQUEST)) }
     server.start()

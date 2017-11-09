@@ -87,10 +87,17 @@ class TestServer {
 
             override fun init(filterConfig: FilterConfig?) {}
         }
-        Root().apply(Root::impl).runServer(filters = listOf(filter)) { port, _ ->
+        val root = Root().apply(Root::impl)
+        root.runServer(filters = listOf(filter)) { port, _ ->
             val response =
                     "http://localhost:$port/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
             Assert.assertEquals("", String(response.second.data))
+        }
+
+        // testNestedContext
+        root.runServer(contextPath = "/api") { port, _ ->
+            val echoResponse = "http://localhost:$port/api/echo".httpPost().body("\"hello\"".toByteArray()).responseString()
+            Assert.assertEquals("\"hello\"", String(echoResponse.second.data))
         }
     }
 }
